@@ -1,38 +1,46 @@
 import { useState } from 'react';
-import './App.css'
+import './App.css';
 import Button from './components/Button';
-import Todos from './components/Todos';7
+import Todos from './components/Todos';
 import { TODOS } from './data/data';
 
 function App() {
-
   const [todos, setTodos] = useState(TODOS);
+  const [input, setInput] = useState('');
 
-  console.log(todos);
-  
-  
-  const handleSubmit = (e) => {
+  const addTodo = (e) => {
     e.preventDefault();
-    console.log(e);
+    if (!input.trim()) return;
     
-  }
-
+    setTodos([...todos, {
+      id: todos.length + 1,
+      body: input
+    }]);
+    setInput('');
+  };
 
   return (
-   <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="todo" />
-        <button type='submit'>Add Todo</button>
+    <div className="app">
+      <form onSubmit={addTodo}>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Add a new todo..."
+          required
+        />
+        <button>Add Todo</button>
       </form>
 
       <h2>My todos</h2>
       <Todos todos={todos} setTodos={setTodos} />
-      <Button />
-      <Button greeting="jambo" />
-      <Button greeting="konichiwa" />
-
-   </div>
-  )
+      
+      <div className="buttons">
+        <Button />
+        <Button greeting="jambo" />
+        <Button greeting="konichiwa" />
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
